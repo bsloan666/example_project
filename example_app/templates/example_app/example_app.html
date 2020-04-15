@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<HTML lang="en">
+<head>
+    <title>SP500 Historical</title>
+    <link href="/static/css/my_style.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/bsplotter.js"></script>
+    <script>
+
+    </script>
+</head>
+<body onload="lineGraph()">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="center">
+        <H1>S&P 500 Historical Data</H1>
+        <input type=hidden id="lineText" valign="top" rows="3" cols="80" 
+            style="width:720px;height:32px"  onkeypress="lineGraph()" 
+            value="
+                {% for record in array_table %}
+                    {{ record.date }},{{ record.close }} 
+                {% endfor %}
+            "/>
+        <table>
+        </table>
+        <input type="text" id="ticker" name="ticker" value="{{ ticker }}">
+        Start Date:  <input type="date" width="16" id="start" name="start" onchange="lineGraph()" value="{{ start }}">
+        End Date:  <input type="date" width="16" id="start" name="end" onchange="lineGraph()" value="{{ end }}">
+        <button type="submit" value="display" name="display">Display</button>&nbsp;
+        <div class="center">
+            <canvas id="linegraph" width="1024" height="128"></canvas>
+        </div>
+        <table>
+        <tr>
+            <td><b>Date</b></td>
+            <td><b>Open</b></td>
+            <td><b>High</b></td>
+            <td><b>Low</b></td>
+            <td><b>Close</b></td>
+            <td><b>Adj. Close</b></td>
+        </tr>
+        {% for record in array_table %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>{{ record.opening }}</td>
+                <td>{{ record.high }}</td>
+                <td>{{ record.low }}</td>
+                <td>{{ record.close }}</td>
+                <td>{{ record.adj_close }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</form>
+</body>
+</HTML>

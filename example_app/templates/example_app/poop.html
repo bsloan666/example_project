@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<HTML lang="en">
+<head>
+    <title>SP500 Historical</title>
+    <link href="/static/css/my_style.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/chartbuilder.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="center">
+        <H1>S&P 500 Historical Data</H1>
+        <table>
+        </table>
+        <input type="text" id="ticker" name="ticker">
+        <button type="submit" value="display" name="display">Display</button>&nbsp;
+        <h1>POOOOOP</h1>
+        <div class="center">
+            <canvas id="my_canvas" width="1024"></canvas>
+        </div>
+    </div>
+</form>
+</body>
+</HTML>
