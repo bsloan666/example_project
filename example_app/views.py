@@ -15,15 +15,16 @@ import base64
 import requests
 import json
 import datetime
+import time
 
 def index(request):
     ohlc = OHLC()
     host = request.META['HTTP_HOST']
     if request.method == "POST":
         args = request.POST
-        print("args:",args)
         results = OHLC.objects.filter(ticker=args['ticker'])
-        print(results)
+        for result in results:
+            result.timestamp = time.mktime(result.date.timetuple()) 
         return render(
             request, 'example_app/example_app.html', 
             {

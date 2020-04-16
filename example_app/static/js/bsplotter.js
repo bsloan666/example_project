@@ -33,12 +33,13 @@ function draw_callout(ctx, x1, y1, x2, y2, x3, y3 ){
     ctx.lineTo(x3, y3);
     ctx.stroke();
 }
+
 function parseCoords(text) {
-    var samplestrs = text.split(' ');
+    var samplestrs = text.split('#');
     var x = [];
     var y = [];
     for( index = 0; index < samplestrs.length; index++){
-        var coords = samplestrs[index].split(','); 
+        var coords = samplestrs[index].split(':');
         x.push(Number(coords[0]));
         y.push(Number(coords[1]));            
     }
@@ -46,11 +47,11 @@ function parseCoords(text) {
 }
 
 function parseKeyvals(text) {
-    var samplestrs = text.split(' ');
+    var samplestrs = text.split('#');
     var keys = [];
     var vals = [];
     for( index = 0; index < samplestrs.length; index++){
-        var pair = samplestrs[index].split(','); 
+        var pair = samplestrs[index].split(':'); 
         keys.push(pair[0]);
         vals.push(Number(pair[1]));            
     }
@@ -59,11 +60,15 @@ function parseKeyvals(text) {
 
 function mlowest(inarray)
 {
-    var mmin = inarray[0];
-    for( index = 0; index < inarray.length; index++)
+    var mmin = 10000000000.00;
+    for( index = 0; index < inarray.length-1; index++)
     {
         if(inarray[index] < mmin)
         {
+            if( inarray[index] == 0)
+            {
+                console.log("zero value at index "+index);
+            }
             mmin = inarray[index];
         }
     }
@@ -72,8 +77,8 @@ function mlowest(inarray)
 
 function mhighest(inarray)
 {
-    var mmax = inarray[0];
-    for( index = 0; index < inarray.length; index++)
+    var mmax = 0.0;
+    for( index = 0; index < inarray.length-1; index++)
     {
         if(inarray[index] > mmax)
         {
@@ -101,9 +106,11 @@ function lineGraph() {
     var cnv_height = cnvs.height-24;
     var coords = parseCoords(txarea.value);
     var minmax = ranges(coords);
-    console.log(coords[0]);
-    console.log(coords[1]);
-    console.log(minmax);
+    console.log("sizes: "+coords[0].length+" "+coords[1].length);
+    console.log("Dates: "+coords[0]);
+    console.log("Values: "+coords[1]);
+    console.log("MinMax: "+minmax);
+    console.log("Date range in days:", coords[0][coords[0].length-2]-coords[0][0]);
 
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, cnv_width+24, cnv_height+24);
@@ -117,11 +124,13 @@ function lineGraph() {
     var yoffset = minmax[2];
     var xmult = (minmax[1] - xoffset);
     var ymult = (minmax[3] - yoffset);
+    var toffset = minmax[0]*1000;
+    var tmult = (minmax[1]*1000 - toffset);
 
     console.log(xmult);
     console.log(ymult);
     // plot 
-    for( index = 0; index < coords[0].length-1; index++)
+    for( index = 0; index < coords[0].length-2; index++)
     {
         var x1 = 24+((coords[0][index] - xoffset) / xmult) * cnv_width;
         var y1 = cnv_height - ((coords[1][index] - yoffset) / ymult) * cnv_height;
@@ -130,13 +139,16 @@ function lineGraph() {
         area_under_curve( ctx, x1, y1, x2, y2, cnv_height, "#88BB88");
         draw_edge( ctx, x1, y1, x2, y2, "#008800", 3);
     }
-    for( index = 0; index < 20; index++)
+    for( index = 0; index < 10; index++)
     {
-        var x1 = 24+cnv_width/20 * index;
-        var xval = xoffset + index/20.0 * xmult;
+        var x1 = 24+cnv_width/10 * index;
+        var toyear = new Date(toffset + index/10.0 * tmult).getFullYear();
+        var tomonth = new Date(toffset + index/10.0 * tmult).getMonth()+1;
+        var todate = new Date(toffset + index/10.0 * tmult).getDate();
+        var xval = tomonth+"/"+todate+"/"+toyear;
         draw_edge( ctx, x1, cnv_height+12, x1, cnv_height, "#000000");
         ctx.fillStyle = "#000000";
-        ctx.fillText(xval.toString(10), x1, cnv_height+24);
+        ctx.fillText(xval, x1, cnv_height+24);
     }
     for( index = 0; index < 10; index++)
     {
