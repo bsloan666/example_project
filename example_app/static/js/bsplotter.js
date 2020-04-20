@@ -34,14 +34,28 @@ function draw_callout(ctx, x1, y1, x2, y2, x3, y3 ){
     ctx.stroke();
 }
 
-function parseCoords(text) {
+function parseDate(s) {
+  var b = s.split(/\D/);
+  return new Date(b[0], --b[1], b[2]);
+}
+
+function parseCoords(text, start, end) {
     var samplestrs = text.split('#');
     var x = [];
     var y = [];
+    console.log("start: "+start)
+    var dstart = parseDate(start).getTime()/1000;
+    var dend = parseDate(end).getTime()/1000;
+    console.log("dstart: "+dstart)
+    console.log("dend: "+dend)
     for( index = 0; index < samplestrs.length; index++){
         var coords = samplestrs[index].split(':');
-        x.push(Number(coords[0]));
-        y.push(Number(coords[1]));            
+        var date_val = Number(coords[0]);
+        if(date_val > dstart && date_val < dend)
+        {    
+            x.push(Number(coords[0]));
+            y.push(Number(coords[1]));
+        }
     }
     return [x, y];
 }
@@ -101,10 +115,12 @@ function ranges(coords)
 function lineGraph() {
     var cnvs = document.getElementById("linegraph");
     var txarea = document.getElementById("lineText");
+    var start_date = document.getElementById("start").value;
+    var end_date = document.getElementById("end").value;
     var ctx = cnvs.getContext("2d");
     var cnv_width = cnvs.width-24;
     var cnv_height = cnvs.height-24;
-    var coords = parseCoords(txarea.value);
+    var coords = parseCoords(txarea.value, start_date, end_date);
     var minmax = ranges(coords);
     console.log("sizes: "+coords[0].length+" "+coords[1].length);
     console.log("Dates: "+coords[0]);
@@ -130,15 +146,6 @@ function lineGraph() {
     console.log(xmult);
     console.log(ymult);
     // plot 
-    for( index = 0; index < coords[0].length-2; index++)
-    {
-        var x1 = 24+((coords[0][index] - xoffset) / xmult) * cnv_width;
-        var y1 = cnv_height - ((coords[1][index] - yoffset) / ymult) * cnv_height;
-        var x2 = 24+((coords[0][index+1] - xoffset) / xmult) * cnv_width;
-        var y2 = cnv_height - ((coords[1][index+1] - yoffset) / ymult) * cnv_height;
-        area_under_curve( ctx, x1, y1, x2, y2, cnv_height, "#88BB88");
-        draw_edge( ctx, x1, y1, x2, y2, "#008800", 3);
-    }
     for( index = 0; index < 10; index++)
     {
         var x1 = 24+cnv_width/10 * index;
@@ -147,16 +154,27 @@ function lineGraph() {
         var todate = new Date(toffset + index/10.0 * tmult).getDate();
         var xval = tomonth+"/"+todate+"/"+toyear;
         draw_edge( ctx, x1, cnv_height+12, x1, cnv_height, "#000000");
+        draw_edge( ctx, x1, cnv_height+12, x1, 0, "#BBBBBB");
         ctx.fillStyle = "#000000";
-        ctx.fillText(xval, x1, cnv_height+24);
+        ctx.fillText(xval, x1-20, cnv_height+24);
     }
     for( index = 0; index < 10; index++)
     {
         var y1 = cnv_height-cnv_height/10 * index;
         var yval = yoffset + index/10.0 * ymult;
         draw_edge( ctx, 12, y1, 24, y1, "#000000");
+        draw_edge( ctx, cnv_width+24, y1, 24, y1, "#BBBBBB");
         ctx.fillStyle = "#000000";
         ctx.fillText(Math.floor(yval).toString(10), 0, y1-3);
+    }
+    for( index = 0; index < coords[0].length-2; index++)
+    {
+        var x1 = 24+((coords[0][index] - xoffset) / xmult) * cnv_width;
+        var y1 = cnv_height - ((coords[1][index] - yoffset) / ymult) * cnv_height;
+        var x2 = 24+((coords[0][index+1] - xoffset) / xmult) * cnv_width;
+        var y2 = cnv_height - ((coords[1][index+1] - yoffset) / ymult) * cnv_height;
+        area_under_curve( ctx, x1, y1, x2, y2, cnv_height, "#44EE44");
+        draw_edge( ctx, x1, y1, x2, y2, "#008800", 3);
     }
 }
 

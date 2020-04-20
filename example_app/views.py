@@ -22,6 +22,7 @@ def index(request):
     host = request.META['HTTP_HOST']
     if request.method == "POST":
         args = request.POST
+        print("POST:",args)
         results = OHLC.objects.filter(ticker=args['ticker'])
         for result in results:
             result.timestamp = time.mktime(result.date.timetuple()) 

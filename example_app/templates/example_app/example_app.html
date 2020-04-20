@@ -20,15 +20,12 @@
         </table>
         <input type="text" id="ticker" name="ticker" value="{{ ticker }}">
         Start Date:  <input type="date" width="16" id="start" name="start" onchange="lineGraph()" value="{{ start }}">
-        End Date:  <input type="date" width="16" id="start" name="end" onchange="lineGraph()" value="{{ end }}">
+        End Date:  <input type="date" width="16" id="end" name="end" onchange="lineGraph()" value="{{ end }}">
         <button type="submit" value="display" name="display">Display</button>&nbsp;
         <div class="center">
             <canvas id="linegraph" width="1024" height="256"></canvas>
         </div>
           <script type = "text/javascript">
-            // var dt = new Date( "December 25, 1995 23:15:20" );
-            var dt = new Date( "December 25, 1995" );
-            document.write("getTime() : " + dt.getTime() ); 
           </script> 
         <table>
         <tr>

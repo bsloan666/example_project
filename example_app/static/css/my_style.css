@@ -9,8 +9,8 @@ body {
 	font-family: 'DroidSans', sans-serif;
 	line-height: 1.75em;
 	font-size: 12px;
-	background-color: #222;
-	color: #aaa;
+	background-color: #FFFFFF;
+	color: #000000;
 }
 
 .center {
@@ -45,16 +45,16 @@ table {
 }
 
 button {
-	color: #EEEEEE;
-	background-color: #444444;
+	color: #000000;
+	background-color: #FFFFFF;
     border-radius: 4px;
     border-color: #888888;
 }
 
 .linkbutton {
   text-decoration: none;
-  color: #EEEEEE;
-  background-color: #444444;
+  color: #000000;
+  background-color: #FFFFFF;
   border-radius: 4px;
   border-color: #888888;
 }
@@ -100,16 +100,16 @@ hr {
 }
 
 a[href] {
-	color: #1e8ad6;
+	color: #121212;
 }
 
 a[href]:hover {
-	color: #3ba0e6;
+	color: #126612;
 }
 
 input {
-    background-color: #2D2D2D;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #000000;
     border-style: groove;
     border-radius: 4px;
     border-color: #888888;
@@ -117,17 +117,9 @@ input {
 	width:100px;
 }
 
-input:read-only {
-    background-color: #2D2D2D;
-    color: #666666;
-    border-style: groove;
-    border-radius: 4px;
-    border-color: #888888;
-}
-
 select {
-    background-color: #2D2D2D;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #000000;
     border-style: groove;
     border-radius: 4px;
     border-color: #888888;
@@ -136,8 +128,8 @@ select {
 }
 
 option {
-    background-color: #2D2D2D;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #000000;
     border-style: groove;
     border-radius: 4px;
     border-color: #888888;
@@ -167,11 +159,11 @@ aside,
 }
 
 tr:nth-child(even) {
-	background-color: #333333;
+	background-color: #EFEFEF;
 }
 
 tr:nth-child(odd) {
-	background-color: #444444;
+	background-color: #CFCFCF;
 }
 
 @font-face {
